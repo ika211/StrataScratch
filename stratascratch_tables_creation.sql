@@ -146,4 +146,149 @@ INSERT INTO amazon_transactions VALUES
 (100,117,'bread','2020-03-10',209);
 
 
+-- Users By Avg Session time
+create table facebook_web_log
+(
+    user_id     int not null,
+    timestamp   timestamp not null,
+    action      varchar  not null
+);
 
+INSERT INTO facebook_web_log VALUES
+(0,'2019-04-25 13:30:15','page_load'),
+(0,'2019-04-25 13:30:18','page_load'),
+(0,'2019-04-25 13:30:40','scroll_down'),
+(0,'2019-04-25 13:30:45','scroll_up'),
+(0,'2019-04-25 13:31:10','scroll_down'),
+(0,'2019-04-25 13:31:25','scroll_down'),
+(0,'2019-04-25 13:31:40','page_exit'),
+(1,'2019-04-25 13:40:00','page_load'),
+(1,'2019-04-25 13:40:10','scroll_down'),
+(1,'2019-04-25 13:40:15','scroll_down'),
+(1,'2019-04-25 13:40:20','scroll_down'),
+(1,'2019-04-25 13:40:25','scroll_down'),
+(1,'2019-04-25 13:40:30','scroll_down'),
+(1,'2019-04-25 13:40:35','page_exit'),
+(2,'2019-04-25 13:41:21','page_load'),
+(2,'2019-04-25 13:41:30','scroll_down'),
+(2,'2019-04-25 13:41:35','scroll_down'),
+(2,'2019-04-25 13:41:40','scroll_up'),
+(1,'2019-04-26 11:15:00','page_load'),
+(1,'2019-04-26 11:15:10','scroll_down'),
+(1,'2019-04-26 11:15:20','scroll_down'),
+(1,'2019-04-26 11:15:25','scroll_up'),
+(1,'2019-04-26 11:15:35','page_exit'),
+(0,'2019-04-28 14:30:15','page_load'),
+(0,'2019-04-28 14:30:10','page_load'),
+(0,'2019-04-28 13:30:40','scroll_down'),
+(0,'2019-04-28 15:31:40','page_exit');
+
+
+
+-- Customer Revenue In March
+
+
+INSERT INTO orders VALUES
+(1,3,'2019-03-04','Coat',100),
+(2,3,'2019-03-01','Shoes',80),
+(3,3,'2019-03-07','Skirt',30),
+(4,7,'2019-02-01','Coat',25),
+(5,7,'2019-03-10','Shoes',80),
+(6,15,'2019-02-01','Boats',100),
+(7,15,'2019-01-11','Shirts',60),
+(8,15,'2019-03-11','Slipper',20),
+(9,15,'2019-03-01','Jeans',80),
+(10,15,'2019-03-09','Shirts',50),
+(11,5,'2019-02-01','Shoes',80),
+(12,12,'2019-01-11','Shirts',60),
+(13,12,'2019-03-11','Slipper',20),
+(14,4,'2019-02-01','Shoes',80),
+(15,4,'2019-01-11','Shirts',60),
+(16,3,'2019-04-19','Shirts',50),
+(17,7,'2019-04-19','Suit',150),
+(18,15,'2019-04-19','Skirt',30),
+(19,15,'2019-04-20','Dresses',200),
+(20,12,'2019-01-11','Coat',125),
+(21,7,'2019-04-01','Suit',50),
+(22,7,'2019-04-02','Skirt',30),
+(23,7,'2019-04-03','Dresses',50),
+(24,7,'2019-04-04','Coat',25),
+(25,7,'2019-04-19','Coat',125);
+
+
+-- Classify Business Type
+create table sf_restaurant_health_violations
+(
+   business_id int not null,
+    business_name varchar not null,
+    business_address varchar not null,
+    business_city varchar not null,
+    business_state varchar not null,
+    business_postal_code float,
+    business_latitude float,
+    business_longitude float,
+    business_location varchar,
+    business_phone_number float ,
+    inspection_id varchar not null,
+    inspection_date date not null,
+    inspection_score float,
+    inspection_type varchar not null,
+    violation_id varchar,
+    violation_description varchar,
+    risk_category varchar
+);
+
+
+-- Top Cool Votes
+create table yelp_reviews(
+    business_name varchar not null,
+    review_id varchar not null,
+    user_id varchar not null,
+    stars varchar not null,
+    review_date date not null,
+    review_text varchar not null,
+    funny int not null,
+    useful int not null,
+    cool int not null);
+
+-- Order details
+create table customers(
+    id int not null,
+    first_name varchar not null,
+    last_name varchar not null,
+    city varchar not null,
+    address varchar,
+    phone_number varchar not null
+);
+
+-- Workers with the Highest Salaries
+create table worker(
+    worker_id int not null,
+    first_name varchar not null,
+    last_name varchar not null,
+    salary int not null,
+    joining_date timestamp not null,
+    department varchar not null
+);
+create table title(
+    worker_ref_id int not null,
+    worker_title varchar not null,
+    affected_from date not null
+);
+
+-- Review of Categories
+create table yelp_business(
+    business_id varchar not null,
+    name varchar not null,
+    neighborhood varchar,
+    address varchar,
+    cityvar char not null,
+    state varchar not null,
+    postal_code varchar,
+    latitude float not null,
+    longitude float not null,
+    stars float not null,
+    review_count int not null,
+    is_open int not null,
+    categories varchar not null
+);
