@@ -115,10 +115,65 @@ FROM
    ORDER BY best_paid_title) sq
 WHERE best_paid_title IS NOT NULL;
 
-select b.worker_title from worker inner join title b on worker.worker_id=b.worker_ref_id Where salary=(select max(salary) from worker);
+select b.worker_title
+from worker inner join title b
+    on worker.worker_id=b.worker_ref_id
+Where salary=(select max(salary) from worker);
 
 -- Review of Categories
 select UNNEST(string_to_array(categories,';')) as category, SUM(review_count) from yelp_business
 group by category
 order by 2 desc;
 
+-- Highest Salary in Department
+select department, first_name, salary
+from (
+     select department, first_name, salary,
+            dense_rank() over(partition by department order by salary desc) as rank
+     from employee
+         ) s
+where rank = 1;
+
+-- Employee and Manager Salaries
+select e.first_name as employee_name, e.salary as employee_salary
+from employee e inner join employee m
+on e.manager_id = m.id
+where e.salary > m.salary;
+
+-- Number of violations
+select EXTRACT(YEAR from inspection_date) as year, COUNT(violation_id) as n_inspections
+from sf_restaurant_health_violations
+where business_name = 'Roxanne Cafe'
+group by year
+order by year;
+
+-- Highest Target Under Manager
+select first_name, target
+from (
+    select first_name, target, dense_rank() over(order by target desc) rank
+    from salesforce_employees
+    where manager_id = 13) s
+where rank = 1;
+
+-- Popularity Percentage
+with cte1 as (
+select user1, user2
+from facebook_friends
+UNION DISTINCT
+select user2, user1
+from facebook_friends)
+select user1, (100*count(1)::float/(select count(distinct user1) from cte1)) as popularity
+from cte1
+group by user1
+order by user1;
+
+-- Highest Cost Orders
+with customer_per_day as (
+select first_name, sum(total_order_cost) as per_day_spent,
+       o.order_date
+from orders o inner join customers c
+on o.cust_id = c.id
+group by c.first_name, o.order_date)
+select first_name, per_day_spent as total_order_cost, order_date
+from customer_per_day
+where per_day_spent = (select max(per_day_spent) from customer_per_day);

@@ -186,7 +186,13 @@ INSERT INTO facebook_web_log VALUES
 
 
 -- Customer Revenue In March
-
+create table orders(
+    id int not null,
+    cust_id int not null,
+    order_date date not null,
+    order_details varchar not null,
+    total_order_cost int not null
+);
 
 INSERT INTO orders VALUES
 (1,3,'2019-03-04','Coat',100),
@@ -217,6 +223,8 @@ INSERT INTO orders VALUES
 
 
 -- Classify Business Type
+-- &
+-- Number of violations
 create table sf_restaurant_health_violations
 (
    business_id int not null,
@@ -282,7 +290,7 @@ create table yelp_business(
     name varchar not null,
     neighborhood varchar,
     address varchar,
-    cityvar char not null,
+    city varchar not null,
     state varchar not null,
     postal_code varchar,
     latitude float not null,
@@ -292,3 +300,48 @@ create table yelp_business(
     is_open int not null,
     categories varchar not null
 );
+
+-- Highest Salary in Department
+-- &
+-- Employee and Manager Salaries
+create table employee(
+    id int not null,
+    first_name varchar not null,
+    last_name varchar not null,
+    age int not null,
+    sex varchar not null,
+    employee_title varchar not null,
+    department varchar not null,
+    salary int not null,
+    target int not null,
+    bonus int not null,
+    email varchar not null,
+    city varchar not null,
+    address varchar,
+    manager_id int not null
+);
+
+-- Highest Target Under Manager
+create table salesforce_employees(
+    id int not null,
+    first_name varchar not null,
+    last_name varchar not null,
+    age int not null,
+    sex varchar not null,
+    employee_title varchar not null,
+    department varchar not null,
+    salary int not null,
+    target int not null,
+    bonus int not null,
+    email varchar not null,
+    city varchar not null,
+    address varchar,
+    manager_id int not null
+);
+
+create table facebook_friends(
+    user1 int not null,
+    user2 int not null
+);
+
+
