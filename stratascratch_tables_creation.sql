@@ -339,9 +339,31 @@ create table salesforce_employees(
     manager_id int not null
 );
 
+--
 create table facebook_friends(
     user1 int not null,
     user2 int not null
 );
 
+-- Monthly Percentage Difference
+create table sf_transactions(
+id int not null,
+created_at date not null,
+value int not null,
+purchase_id int);
+
+-- Premium vs Freemium
+create table ms_user_dimension(
+    user_id int not null,
+    acc_id int not null
+);
+create table ms_acc_dimension(
+    acc_id int not null,
+    paying_customer varchar not null
+);
+create table ms_download_facts(
+    date date not null,
+    user_id int not null,
+    downloads int not null
+);
 

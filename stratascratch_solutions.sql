@@ -177,3 +177,33 @@ group by c.first_name, o.order_date)
 select first_name, per_day_spent as total_order_cost, order_date
 from customer_per_day
 where per_day_spent = (select max(per_day_spent) from customer_per_day);
+
+-- Monthly Percentage Difference
+with monthly_sales as (
+    select to_char(created_at, 'YYYY-MM') as month, SUM(value) as total
+    from sf_transactions
+    group by to_char(created_at, 'YYYY-MM')
+)
+select month, round((total - (lag(total,1) over(order by month)))::decimal / (lag(total,1) over(order by month)) * 100, 2) as percent_change
+from monthly_sales
+;
+
+select to_char(created_at,'YYYY-MM') as year_month,
+       ROUND(((SUM(value) - LAG(SUM(value),1) over w) / (LAG(SUM(value),1) over w)) * 100,2) as revenue_diff_pct
+from sf_transactions
+group by year_month
+window w AS (ORDER BY to_char(created_at,'YYYY-MM'));
+
+-- Premium vs Freemium
+with day_downloads as (
+select date, SUM(CASE WHEN paying_customer='no' THEN downloads ELSE 0 END) as non_paying,
+       SUM(CASE WHEN paying_customer='yes' THEN downloads ELSE 0 END) as paying
+from ms_download_facts d inner join ms_user_dimension u on d.user_id = u.user_id
+inner join ms_acc_dimension mad on u.acc_id = mad.acc_id
+group by date
+)
+select *
+from day_downloads
+where non_paying > paying
+order by date
+;
