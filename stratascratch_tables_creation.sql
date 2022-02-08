@@ -367,3 +367,20 @@ create table ms_download_facts(
     downloads int not null
 );
 
+--Finding Updated Records
+create table ms_employee_salary(
+    id int not null,
+    first_name varchar not null,
+    last_name varchar not null,
+    salary int not null,
+    department_id int not null
+);
+
+--Marketing Campaign Success [Advanced]
+create table marketing_campaign(
+    user_id int not null,
+    created_at date not null,
+    product_id int not null,
+    quantity int not null,
+    price int not null
+);

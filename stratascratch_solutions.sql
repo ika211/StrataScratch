@@ -194,6 +194,8 @@ from sf_transactions
 group by year_month
 window w AS (ORDER BY to_char(created_at,'YYYY-MM'));
 
+
+
 -- Premium vs Freemium
 with day_downloads as (
 select date, SUM(CASE WHEN paying_customer='no' THEN downloads ELSE 0 END) as non_paying,
@@ -207,3 +209,52 @@ from day_downloads
 where non_paying > paying
 order by date
 ;
+
+
+-- Top 5 States with 5 Star Businesses
+select state, n_businesses
+from (
+select state, count(1) as n_businesses,
+       rank() over(order by count(1) desc) as r
+from yelp_business
+where stars = 5
+group by state
+order by 2 desc,1) s
+where r < 6;
+
+--Finding Updated Records
+--(assuming salaries only increase)
+with temp as (
+select *, row_number() over (partition by id order by salary desc) r
+from ms_employee_salary)
+select id, first_name, last_name, department_id, salary as max
+from temp
+where r = 1;
+
+
+--Marketing Campaign Success [Advanced]
+
+select count(distinct user_id)
+from
+    (select
+        dense_rank() over (partition by user_id order by created_at) as rnk1,
+        dense_rank() over (partition by user_id , product_id order by created_at) as rnk2,
+        -- edited according to suggestion
+        -- dense_rank() over (partition by user_id , created_at order by product_id) as rnk3,
+         user_id,
+         product_id,
+         created_at
+    from marketing_campaign) foo
+where rnk1>1 and rnk2=1; -- and rnk3=1
+
+select count(distinct user_id)
+from
+    (SELECT user_id,
+            min(created_at) over(partition by user_id ) as m1,
+            min(created_at) over(partition by user_id,product_id ) as m2
+    FROM marketing_campaign) c
+where m1<>m2;
+
+
+
+
