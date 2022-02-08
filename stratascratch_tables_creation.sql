@@ -384,3 +384,42 @@ create table marketing_campaign(
     quantity int not null,
     price int not null
 );
+
+-- Popularity of Hack
+create table facebook_employees(
+    id int not null,
+    location varchar not null,
+    age int not null,
+    gender varchar(1) not null,
+    is_senior bool not null
+);
+create table facebook_hack_survey(
+    employee_id int not null,
+    age int not null,
+    gender varchar(1) not null,
+    popularity int not null
+);
+
+-- Host Popularity Rental Prices
+create table airbnb_host_searches(
+id int not null,
+price float not null,
+property_type varchar not null,
+room_type varchar not null,
+amenities varchar not null,
+accommodates int not null,
+bathrooms int not null,
+bed_type varchar not null,
+cancellation_policy varchar not null,
+cleaning_fee bool not null,
+city varchar not null,
+host_identity_verified varchar not null,
+host_response_rate varchar,
+host_since date  not null,
+neighbourhood varchar,
+number_of_reviews int not null,
+review_scores_rating float,
+zipcode int not null,
+bedrooms int not null,
+beds int not null
+)

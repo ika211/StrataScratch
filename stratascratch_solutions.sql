@@ -256,5 +256,13 @@ from
 where m1<>m2;
 
 
+-- Average Salaries
+select department, first_name, salary,
+       avg(salary) over(partition by department)
+from employee;
 
-
+-- Popularity of Hack
+select location, avg(popularity)
+from facebook_hack_survey fhs inner join facebook_employees fe
+    on fhs.employee_id = fe.id
+group by location;
