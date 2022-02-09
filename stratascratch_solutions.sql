@@ -266,3 +266,46 @@ select location, avg(popularity)
 from facebook_hack_survey fhs inner join facebook_employees fe
     on fhs.employee_id = fe.id
 group by location;
+
+-- Host Popularity Rental Prices
+with host_ratings as (
+    select CONCAT_WS('|',price::varchar, room_type, host_since::varchar, zipcode::varchar, number_of_reviews::varchar) as host_id,
+           CASE
+               WHEN number_of_reviews > 40 THEN 'Hot'
+               WHEN number_of_reviews >= 16 THEN 'Popular'
+               WHEN number_of_reviews >= 6 THEN 'Trending Up'
+               WHEN number_of_reviews >= 1 THEN 'Rising'
+               ELSE 'New'
+           END as host_pop_rating,
+           price
+    from airbnb_host_searches
+    group by price, room_type, host_since, zipcode, number_of_reviews
+    )
+select host_pop_rating,
+       min(price) as min_price,
+       avg(price) as avg_price,
+       max(price) as max_price
+from host_ratings
+group by host_pop_rating;
+
+-- Customer Details
+select c.first_name, c.last_name, c.city, o.order_details
+from customers c left join orders o
+on c.id = o.cust_id
+order by c.first_name, o.order_details;
+
+-- Number of Bathrooms and Bedrooms
+WITH distinct_hosts as (
+select CONCAT_WS('|',price::varchar, room_type, host_since::varchar, zipcode::varchar, number_of_reviews::varchar) as host_id,
+        min(property_type) as property_type,
+        min(city) as city,
+        min(bedrooms) as bedroooms,
+        min(bathrooms) as bathrooms
+from airbnb_host_searches
+group by price, room_type, host_since, zipcode, number_of_reviews
+    )
+select city, property_type,
+       avg(bathrooms) as n_bathrooms_avg,
+       avg(bedroooms) as n_bedrooms_avg
+from distinct_hosts
+group by city, property_type;
